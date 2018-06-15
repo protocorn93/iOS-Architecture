@@ -68,13 +68,13 @@
 
 #### Apple's MVC
 
-애플이 제시한 MVC에서 Controller는 View와 Model의 중재자로 View와 Model의 직접적인 연결을 막습니다. 이는 전통적인 MVC보다 높은 독립성의 보장을 기대합니다. 하지만 이러한 기대가 실제 개발에 큰 효과를 가져올까요? 먼저 애플이 기대한 MVC 패턴의 다이어그램을 살펴보도록 하겠습니다.
+애플이 제시한 Cocoa MVC에서 Controller는 View와 Model의 중재자로 View와 Model의 직접적인 연결을 막습니다. 이는 전통적인 MVC보다 높은 독립성의 보장을 기대합니다. 하지만 이러한 기대가 실제 개발에 큰 효과를 가져올까요? 먼저 Cocoa MVC 패턴의 다이어그램을 살펴보도록 하겠습니다.
 
 <img src="https://cdn-images-1.medium.com/max/1200/1*c0aGaDNX41qu6e8E4OEgwQ.png" width="80%"/>
 
 위의 다이어그램을 얼핏보면 View와 Model의 독립성이 보장되는 것으로 보입니다. 실제 개발은 어떻게 이루어질까요?
 
-애플이 제시한 MVC 아키텍쳐에서 Controller의 역할은 `UIViewController`가 담당하게 됩니다. 그리고 `UIViewController`는 View를 소유하게 되고 View들의 Lify Cycle과 강하게 연결되게 됩니다. 그렇기 때문에 View와 Controller의 분리가 쉽지 않으며 Controller의 재사용이 어려워지고 이로인해 연관되어 있는 View의 재사용 역시 어려워집니다. 
+Cocoa MVC 아키텍쳐에서 Controller의 역할은 `UIViewController`가 담당하게 됩니다. 그리고 `UIViewController`는 View를 소유하게 되고 View들의 Lify Cycle과 강하게 연결되게 됩니다. 그렇기 때문에 View와 Controller의 분리가 쉽지 않으며 Controller의 재사용이 어려워지고 이로인해 연관되어 있는 View의 재사용 역시 어려워집니다. 
 
 이렇게 View와 Controller가 강하게 연결되어 있기에 테스팅의 과정 역시 굉장히 힘들어집니다. 독립적이라고 말할 수 있는 것은 Model이 전부입니다. 그리고 View 위에서의 사용자의 액션과 이에 따른 메소드뿐만 아니라 `UIViewController`에서 일어나는 각종 행위로 (네트워크 통신, Delegation 등) Controller는 방대해지고 이를 흔히 **M**assive **V**iew**C**ontroller라고 부르기도 합니다.
 
@@ -82,7 +82,7 @@
 
 <img src="https://cdn-images-1.medium.com/max/1600/1*PkWjDU0jqGJOB972cMsrnA.png" width="80%"/>
 
-이렇게 방대해진 `UIViewController`를 줄이는 행위, [View Controller Offloading](https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/)은 iOS 개발자들에게 중요한 과제가 되었습니다. Apple이 제시한 MVC 아키텍쳐를 구현한 코드를 살펴보겠습니다.
+이렇게 방대해진 `UIViewController`를 줄이는 행위, [View Controller Offloading](https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/)은 iOS 개발자들에게 중요한 과제가 되었습니다. Cocoa MVC 아키텍쳐를 구현한 코드를 살펴보겠습니다.
 
 ```swift
 import UIKit
@@ -170,6 +170,108 @@ iOS 개발에 있어서 아키텍쳐에 크게 신경을 쓸 수 없거나 지�
 ---
 
 ### MVP
+
+M : Model
+
+V : View (`UIView` 그리고/혹은 `UIViewController`)
+
+P : Presenter
+
+먼저 다이어그램을 살펴보도록 하겠습니다.
+
+<img src="https://cdn-images-1.medium.com/max/1600/1*hKUCPEHg6TDz6gtOlnFYwQ.png"/>
+
+위에서 살펴본 Cocoa MVC와 굉장히 비슷한 모습을 하고있는 걸 확인할 수 있습니다. 그러면 실제로도 Cocoa MVC와 유사할까요? 전혀 그렇지 않습니다.
+
+먼저 MVC와는 다르게 `UIView`나 `UIViewController` 둘 모두 View에 해당합니다. Cocoa MVC에서 `UIViewController`는 Controller에 해당했었고 그로인해 View와 강하게 연결되어 있었습니다. 이 둘을 View로 분류하는 대신 MVP 패턴에서는 Presenter라는 것이 등장합니다. 
+
+Presenter는 Cocoa MVC와는 다르게 View(`UIView`, `UIViewController`)의 Life Cycle에 영향을 받지 않고 레이아웃 코드 역시 Presenter에 존재하지 않습니다. 하지만 보다 Controller의 역할답게 View를 데이터와 상태에 맞추어 갱신하는 역할을 갖게 됩니다. 즉 Presenter는 Model로 부터 갱신된 데이터를 받아와 뷰를 갱신하는 역할을 합니다.
+
+위에서 언급했듯이 Cocoa MVC와 다르게 MVP 패턴에서 `UIViewController`와 이를 상속받는 클래스들은 Presenter(Controller)가 아니라 View에 해당합니다. 이는 보다 테스팅의 효과를 높일 수 있습니다. 
+
+코드로 살펴보도록 하겠습니다.
+
+```swift
+import UIKit
+import PlaygroundSupport
+
+struct Person { // Model
+    let firstName:String
+    let lastName:String
+}
+
+protocol GreetingView:class { // View Protocol
+    func setGreeting(greeting:String)
+}
+
+protocol GreetingViewPresenter { // Presenter Protocol
+    init(view: GreetingView, person: Person)
+    func showGreeting()
+}
+
+class GreetingPresenter : GreetingViewPresenter { // Presenter
+    weak var view: GreetingView?
+    let person: Person
+
+    required init(view: GreetingView, person: Person) {
+        self.view = view
+        self.person = person
+    }
+    // 3.
+    func showGreeting() { // Update View
+        let greeting = "Hello" + " " + self.person.firstName + " " + self.person.lastName
+        self.view?.setGreeting(greeting: greeting)
+    }
+}
+
+class GreetingViewController : UIViewController, GreetingView { // View
+    var presenter: GreetingViewPresenter!
+    ...
+    // Properties
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)
+        setupLayout()
+        self.showGreetingButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+    }
+    ...
+    // Layout Code
+    // 2. 
+    @objc func didTapButton(button: UIButton) {
+        self.presenter.showGreeting()  // Send Action to Presenter
+    }
+    // 1.
+    func setGreeting(greeting: String) {
+        self.greetingLabel.text = greeting
+    }
+    // layout code goes here
+}
+// Present the view controller in the Live View window
+// Assembling of MVP
+let model = Person(firstName: "Wasin", lastName: "Thonkaew")
+let view = GreetingViewController()
+let presenter = GreetingPresenter(view: view, person: model)
+view.presenter = presenter
+
+PlaygroundPage.current.liveView = view
+```
+
+다이어그램과 코드를 통해 살펴보고 가야할 몇 가지가 존재합니다. 
+
+먼저 View는 Presenter를 소유하고 있어야 하며 Presenter는 유저 액션, 데이터 갱신, 상태 갱신에 따라 View를 갱신해주어야 합니다. 이를 코드로써 구현할 때 View는 Presenter를 강한 참조로 소유하고 있고 Presenter는 약한 참조로 View를 단순히 가리키고만 있습니다. 그렇기 때문에 View의 Life Cycle의 영향과 레이아웃 코드와 액션 코드가 공존하는 등의 의존성에서는 벗어날 수 있지만 참조에 의한 1:1 의존성에서는 벗어날 수 없다는 한계가 존재합니다.
+
+다음으로는 `GreetingViewController`을 살펴보도록 하겠습니다. 이 곳에는 레이아웃과 유저의 액션을 전달하는 코드만이 위치하게 됩니다. 실제로 흐름을 살펴보도록 하겠습니다.
+
+1. 프로토콜 메소드로 뷰를 갱신하는 메소드를 **정의** (***호출이 아님을 명심하자.***)
+2. View 위에 존재하는 버튼에 `.touchUpInside` 액션이 들어오면 View는 `didTapButton` 메소드를 통해 Presenter에 이러한 사실을 알립니다.
+3. Presenter는 유저의 액션에 대해 Model로부터 값을 가져와 뷰를 갱시하는 메소드를 **호출** (**호출**이라는 행위는 Presenter에 의해 행해진다.)
+
+MVC와 마찬가지로 MVP는 좋은 아키텍쳐의 기준에 얼마나 부합하는지 살펴보도록 하겠습니다.
+
+- **Distribution** : 전통적인 MVC에서 발생한 Model과 View의 의존성 문제는 해결하였다. 하지만 참조에 의한 View와 Controller의 의존성은 존재하지만 비교적 셋 모두 역할별로 적절히 나누어져 있다고 말할 수 있습니다. 
+- **Testability** : 각각의 요소를 독립적으로 테스팅하기 용이합니다.
+- **Easy of Use** : Presenter의 추가와 이를 구현하기 위한 프로토콜등의 추가로 코드가 MVC보다 길어집니다.
 
 ---
 
