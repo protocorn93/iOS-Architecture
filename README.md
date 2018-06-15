@@ -58,7 +58,7 @@
 
 #### Traditional MVC
 
-<img src="https://cdn-images-1.medium.com/max/2000/1*E9A5fOrSr0yVmc7Kly5C6A.png" style="zoom:50%" />
+<img src="https://cdn-images-1.medium.com/max/2000/1*E9A5fOrSr0yVmc7Kly5C6A.png" width="80%"/>
 
 위의 다이어그램을 통해 우리는 Model, View 그리고 Controller, 이 세 요소가 서로 강하게 연결되어 있음을 알 수 있습니다. View는 사용자의 액션을 Controller에게 전달하고 Controller는 이에 따른 데이터의 갱신을 Model에게 요청합니다. 이렇게 Model에서 데이터의 갱신이 일어나고 Model은 이런 상태 변화를 View에게 전달합니다. 그렇게 되면 View 역시 갱신된 데이터에 맞추어 갱신됩니다.
 
@@ -70,7 +70,7 @@
 
 애플이 제시한 MVC에서 Controller는 View와 Model의 중재자로 View와 Model의 직접적인 연결을 막습니다. 이는 전통적인 MVC보다 높은 독립성의 보장을 기대합니다. 하지만 이러한 기대가 실제 개발에 큰 효과를 가져올까요? 먼저 애플이 기대한 MVC 패턴의 다이어그램을 살펴보도록 하겠습니다.
 
-<img src="https://cdn-images-1.medium.com/max/1200/1*c0aGaDNX41qu6e8E4OEgwQ.png" style="zoom:50%"/>
+<img src="https://cdn-images-1.medium.com/max/1200/1*c0aGaDNX41qu6e8E4OEgwQ.png" width="80%"/>
 
 위의 다이어그램을 얼핏보면 View와 Model의 독립성이 보장되는 것으로 보입니다. 실제 개발은 어떻게 이루어질까요?
 
@@ -80,7 +80,7 @@
 
 그래서 실제 다이어그램은 다음과 같은 흐름을 갖게 됩니다.
 
-<img src="https://cdn-images-1.medium.com/max/1600/1*PkWjDU0jqGJOB972cMsrnA.png" style="zoom:50%"/>
+<img src="https://cdn-images-1.medium.com/max/1600/1*PkWjDU0jqGJOB972cMsrnA.png" width="80%"/>
 
 이렇게 방대해진 `UIViewController`를 줄이는 행위, [View Controller Offloading](https://www.objc.io/issues/1-view-controllers/lighter-view-controllers/)은 iOS 개발자들에게 중요한 과제가 되었습니다. Apple이 제시한 MVC 아키텍쳐를 구현한 코드를 살펴보겠습니다.
 
