@@ -171,11 +171,9 @@ iOS 개발에 있어서 아키텍쳐에 크게 신경을 쓸 수 없거나 지�
 
 ### MVP
 
-M : Model
-
-V : View (`UIView` 그리고/혹은 `UIViewController`)
-
-P : Presenter
+- M : Model
+- V : View (`UIView` 그리고/혹은 `UIViewController`)
+- P : Presenter
 
 먼저 다이어그램을 살펴보도록 하겠습니다.
 
@@ -277,7 +275,34 @@ MVC와 마찬가지로 MVP는 좋은 아키텍쳐의 기준에 얼마나 부합�
 
 ### MVVM
 
+> MVVM 패턴은 RxSwift에 대한 경험이 없는 관계로 다른 프레임워크를 사용하지 않고 MVVM을 소개하고 있는 [How not to get desperate with MVVM implementation](https://medium.com/flawless-app-stories/how-to-use-a-model-view-viewmodel-architecture-for-ios-46963c67be1b)을 참고하여 작성하였습니다.
+
+- M : Model
+- V : View
+- VM : ViewModel
+
+먼저 다이어그램을 살펴보도록 하겠습니다.
+
+<img src="https://cdn-images-1.medium.com/max/800/1*8MiNUZRqM1XDtjtifxTSqA.png" />
+
+MVVM의 정의에 의하면 View는 오직 시각적인 요소로만 이루어져야 합니다. View에서는 레이아웃, 애니매이션 그리고 UI 요소들에 대한 초기화 작업 코드들만이 위치하게 됩니다. MVVM에서 View와 Model 사이에 ViewModel이 위치하게 됩니다. ViewModel은 View의 각 UI 요소들에 대한 인터페이스를 제공합니다. View의 UI 요소들과 ViewModel의 인터페이스를 연결시키는 작업을 "**바인딩(Binding)**" 이라고 합니다.
+
+MVVM에서 View의 비즈니스 로직은 ViewModel에 정의되어 있으며 이에 맞춰 View가 갱신됩니다. 예를들어 `Date` 를 `String` 으로 변환하는 작업은 ViewModel에서 진행되고 View에서는 이에 맞춰 갱신만 일어나게 됩니다. 그렇기 때문에 View가 어떻게 구성되어 있는지와 상관없이 View의 비즈니스 로직에 대해서 테스팅이 가능해집니다. 
+
+전체적인 흐름으로 보았을 때 ViewModel은 View로부터 사용자의 액션을 받아오고 Model로부턴 데이터를 받아와 이렇게 받아온 데이터를 View에서 보여줄 값(**Ready-To-Display Property**)으로 가공을 합니다. 그와 동시에 View는 ViewModel의 이러한 **Ready-To-Display Property** 값을 observing하고 있어 값이 갱신되면 이에 맞춰 View를 갱신하게 됩니다.  
+
+MVP와 마찬가지로 `UIView`와 `UIViewController`를 View로 묶어 분류합니다. 그렇기 때문에 View에서는 다음의 작업들만 해주면 됩니다.
+
+1. Initiate/Layout/Present UI components.
+2. Bind UI components with the ViewModel.
+
+그리고 ViewModel에서는 다음과 같은 작업을 해주면 됩니다.
+
+1. Write controller logics such as pagination, error handling, etc.
+2. Write presentational logic, provide interfaces to the View.
+
+
+
 ---
 
 ### VIPER
-
