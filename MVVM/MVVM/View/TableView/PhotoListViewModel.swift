@@ -19,6 +19,7 @@ class PhotoListViewModel {
     
     private var cellViewModels:[PhotoListCellViewModel] = [PhotoListCellViewModel]() {
         didSet{
+            // notify
             self.reloadTableViewClosure?()
         }
     }
@@ -29,6 +30,7 @@ class PhotoListViewModel {
     
     var isLoading: Bool = false {
         didSet{
+            // notify
             self.updateLoadingStatus?()
         }
     }
@@ -44,9 +46,10 @@ class PhotoListViewModel {
     }
     //MARK: Methods
     func requestFetchData(){
-        self.isLoading = true
+        self.isLoading = true // trigger activity indicator startAnimating
         apiService.fetchPopularPhoto { [weak self] (success, photos, error) in
-            self?.isLoading = false
+            // Compelete Fetching Data
+            self?.isLoading = false // trigger activity indicator stopAnimating
             if let error = error {
                 self?.alertMessage = error.rawValue
             } else {
@@ -57,15 +60,12 @@ class PhotoListViewModel {
     
     private func processFetchedPhoto( photos: [Photo] ) {
         self.photos = photos // Cache
-        var vms = [PhotoListCellViewModel]()
-        for photo in photos {
-            vms.append( createCellViewModel(photo: photo) )
-        }
-        self.cellViewModels = vms
+        var viewModels = [PhotoListCellViewModel]() // TableViewCellViewModel
+        photos.forEach({viewModels.append(createCellViewModel(photo: $0))})
+        self.cellViewModels = viewModels // trigger photoListTableView reloadData
     }
     
     func createCellViewModel( photo: Photo ) -> PhotoListCellViewModel {
-        
         //Wrap a description
         var descTextContainer: [String] = [String]()
         if let camera = photo.camera {

@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class ViewController: UIViewController {
+class PhotoListViewController: UIViewController {
 
     //MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -25,12 +25,13 @@ class ViewController: UIViewController {
         initializeTableView()
         initializeViewModel()
     }
-    //MARK: Setup TableView
+    //MARK: Initiate UI Components
     func initializeTableView(){
-        self.navigationItem.title = "Popular"
-        tableView.estimatedRowHeight = 150
+        title = "Popular"
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 150
     }
+    
     //MARK: Setup ViewModel
     func initializeViewModel(){
         viewModel.showAlertClosure = { [weak self] () in
@@ -75,18 +76,14 @@ class ViewController: UIViewController {
     }
 }
 //MARK:- TableViewDelegate & DataSource
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension PhotoListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "photoCellIdentifier", for: indexPath) as? PhotoListTableViewCell else {
             fatalError("Cell not exists in storyboard")
         }
-        
+        // get data from cellViewModel
         let cellVieWModel = viewModel.getCellViewModel(at: indexPath)
-        cell.nameLabel.text = cellVieWModel.titleText
-        cell.descriptionLabel.text = cellVieWModel.descText
-        cell.dateLabel.text = cellVieWModel.dateText
-        cell.mainImageView.sd_setImage(with: URL(string: cellVieWModel.imageUrl), completed: nil
-        )
+        cell.setupViews(viewModel: cellVieWModel)
         return cell
     }
     
@@ -96,6 +93,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

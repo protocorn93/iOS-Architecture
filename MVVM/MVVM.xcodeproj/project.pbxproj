@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DCFAE142A041029C149DA45 /* Pods_MVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCD1A9F0C3A60F8E9B0C5B3 /* Pods_MVVM.framework */; };
 		3ED1030620E5F8B200A86B08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1030520E5F8B200A86B08 /* AppDelegate.swift */; };
-		3ED1030820E5F8B200A86B08 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1030720E5F8B200A86B08 /* ViewController.swift */; };
+		3ED1030820E5F8B200A86B08 /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */; };
 		3ED1030B20E5F8B200A86B08 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ED1030920E5F8B200A86B08 /* Main.storyboard */; };
 		3ED1030D20E5F8B400A86B08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED1030C20E5F8B400A86B08 /* Assets.xcassets */; };
 		3ED1031020E5F8B400A86B08 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ED1030E20E5F8B400A86B08 /* LaunchScreen.storyboard */; };
@@ -24,7 +24,7 @@
 /* Begin PBXFileReference section */
 		3ED1030220E5F8B200A86B08 /* MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED1030520E5F8B200A86B08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3ED1030720E5F8B200A86B08 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
 		3ED1030A20E5F8B200A86B08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3ED1030C20E5F8B400A86B08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ED1030F20E5F8B400A86B08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,6 +52,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EC2A8D220E6284400700BDF /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */,
+				3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		3EC2A8D320E6284E00700BDF /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */,
+				3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
 		3ED102F920E5F8B200A86B08 = {
 			isa = PBXGroup;
 			children = (
@@ -105,10 +123,8 @@
 		3ED1031F20E609D400A86B08 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3ED1030720E5F8B200A86B08 /* ViewController.swift */,
-				3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */,
-				3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */,
-				3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */,
+				3EC2A8D320E6284E00700BDF /* TableViewCell */,
+				3EC2A8D220E6284400700BDF /* TableView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -243,7 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ED1030820E5F8B200A86B08 /* ViewController.swift in Sources */,
+				3ED1030820E5F8B200A86B08 /* PhotoListViewController.swift in Sources */,
 				3ED1032320E60D8600A86B08 /* PhotoListViewModel.swift in Sources */,
 				3ED1031920E5FB2E00A86B08 /* Photo.swift in Sources */,
 				3ED1032520E60DD200A86B08 /* PhotoListCellViewModel.swift in Sources */,
@@ -397,7 +413,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 452DHHAC9T;
 				INFOPLIST_FILE = MVVM/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MVVM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -413,7 +432,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 452DHHAC9T;
 				INFOPLIST_FILE = MVVM/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MVVM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

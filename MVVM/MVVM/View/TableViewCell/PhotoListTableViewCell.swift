@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PhotoListTableViewCell: UITableViewCell {
     
@@ -14,4 +15,12 @@ class PhotoListTableViewCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
+    
+    func setupViews(viewModel: PhotoListCellViewModel) {
+        nameLabel.text = viewModel.titleText
+        descriptionLabel.text = viewModel.descText
+        dateLabel.text = viewModel.dateText
+        mainImageView.sd_setImage(with: URL(string: viewModel.imageUrl), completed: nil
+        )
+    }
 }
