@@ -106,3 +106,80 @@ fastlane/test_output
 
 
 # End of https://www.gitignore.io/api/xcode,swift,macos
+MVVM/Podfile
+MVVM/Podfile.lock
+MVVM/MVVM.xcworkspace/contents.xcworkspacedata
+MVVM/MVVM.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+MVVM/Pods/Manifest.lock
+MVVM/Pods/Pods.xcodeproj/project.pbxproj
+MVVM/Pods/SDWebImage/LICENSE
+MVVM/Pods/SDWebImage/README.md
+MVVM/Pods/SDWebImage/SDWebImage/NSButton+WebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/NSButton+WebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/NSData+ImageContentType.h
+MVVM/Pods/SDWebImage/SDWebImage/NSData+ImageContentType.m
+MVVM/Pods/SDWebImage/SDWebImage/NSImage+WebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/NSImage+WebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/SDAnimatedImageRep.h
+MVVM/Pods/SDWebImage/SDWebImage/SDAnimatedImageRep.m
+MVVM/Pods/SDWebImage/SDWebImage/SDImageCache.h
+MVVM/Pods/SDWebImage/SDWebImage/SDImageCache.m
+MVVM/Pods/SDWebImage/SDWebImage/SDImageCacheConfig.h
+MVVM/Pods/SDWebImage/SDWebImage/SDImageCacheConfig.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCoder.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCoder.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCoderHelper.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCoderHelper.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCodersManager.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCodersManager.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCompat.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageCompat.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageDownloader.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageDownloader.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageDownloaderOperation.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageDownloaderOperation.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageFrame.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageFrame.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageGIFCoder.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageGIFCoder.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageImageIOCoder.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageImageIOCoder.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageManager.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageManager.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageOperation.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImagePrefetcher.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImagePrefetcher.m
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageTransition.h
+MVVM/Pods/SDWebImage/SDWebImage/SDWebImageTransition.m
+MVVM/Pods/SDWebImage/SDWebImage/UIButton+WebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/UIButton+WebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+ForceDecode.h
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+ForceDecode.m
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+GIF.h
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+GIF.m
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+MultiFormat.h
+MVVM/Pods/SDWebImage/SDWebImage/UIImage+MultiFormat.m
+MVVM/Pods/SDWebImage/SDWebImage/UIImageView+HighlightedWebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/UIImageView+HighlightedWebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/UIImageView+WebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/UIImageView+WebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/UIView+WebCache.h
+MVVM/Pods/SDWebImage/SDWebImage/UIView+WebCache.m
+MVVM/Pods/SDWebImage/SDWebImage/UIView+WebCacheOperation.h
+MVVM/Pods/SDWebImage/SDWebImage/UIView+WebCacheOperation.m
+MVVM/Pods/Target Support Files/Pods-MVVM/Info.plist
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-acknowledgements.markdown
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-acknowledgements.plist
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-dummy.m
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-frameworks.sh
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-resources.sh
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM-umbrella.h
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM.debug.xcconfig
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM.modulemap
+MVVM/Pods/Target Support Files/Pods-MVVM/Pods-MVVM.release.xcconfig
+MVVM/Pods/Target Support Files/SDWebImage/Info.plist
+MVVM/Pods/Target Support Files/SDWebImage/SDWebImage-dummy.m
+MVVM/Pods/Target Support Files/SDWebImage/SDWebImage-prefix.pch
+MVVM/Pods/Target Support Files/SDWebImage/SDWebImage-umbrella.h
+MVVM/Pods/Target Support Files/SDWebImage/SDWebImage.modulemap
+MVVM/Pods/Target Support Files/SDWebImage/SDWebImage.xcconfig
