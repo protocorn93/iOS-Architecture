@@ -12,11 +12,10 @@ class PhotoListViewModel {
     //MARK: Properties
     let apiService: APIServiceProtocol
     private var photos: [Photo] = [Photo]()
-    //MARK: Binding Closures
-    var reloadTableViewClosure: (()->())?
-    var updateLoadingStatus: (()->())?
-    var showAlertClosure: (()->())?
+    var selectedPhoto: Photo?
+    var isAllowSegue: Bool = false
     
+    //MARK: Observed Properties
     private var cellViewModels:[PhotoListCellViewModel] = [PhotoListCellViewModel]() {
         didSet{
             // notify
@@ -36,14 +35,22 @@ class PhotoListViewModel {
     }
     
     var alertMessage: String? {
-        didSet {
+        didSet{
+            // notify
             self.showAlertClosure?()
         }
     }
+    
+    //MARK: Binding Closures
+    var reloadTableViewClosure: (()->())?
+    var updateLoadingStatus: (()->())?
+    var showAlertClosure: (()->())?
+    
     //MARK: Initializer
     init( apiService: APIServiceProtocol = APIService()) {
         self.apiService = apiService
     }
+    
     //MARK: Methods
     func requestFetchData(){
         self.isLoading = true // trigger activity indicator startAnimating
@@ -87,6 +94,23 @@ class PhotoListViewModel {
     
     func getCellViewModel( at indexPath: IndexPath ) -> PhotoListCellViewModel {
         return cellViewModels[indexPath.row]
+    }
+}
+
+//MARK:- User Interaction
+extension PhotoListViewModel {
+    func userPressed(at indexPath: IndexPath) {
+        let photo = self.photos[indexPath.row]
+        if photo.for_sale {
+            // allow segue
+            self.isAllowSegue = true
+            self.selectedPhoto = photo
+        }else{
+            self.isAllowSegue = false
+            self.selectedPhoto = nil
+            // trigger alert
+            self.alertMessage = "This item is not for sale"
+        }
     }
 }
 

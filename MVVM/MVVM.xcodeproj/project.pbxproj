@@ -19,12 +19,13 @@
 		3ED1032120E609F300A86B08 /* PhotoListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */; };
 		3ED1032320E60D8600A86B08 /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */; };
 		3ED1032520E60DD200A86B08 /* PhotoListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */; };
+		3EFA487320E6666A0021EFFF /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFA487220E6666A0021EFFF /* PhotoDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3ED1030220E5F8B200A86B08 /* MVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED1030520E5F8B200A86B08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
+		3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoListViewController.swift; path = "/Users/dongkun/Programming/Swift/Programming Guide/Design Pattern/MVVM/MVVM/View/PhotoListTableView/PhotoListViewController.swift"; sourceTree = "<absolute>"; };
 		3ED1030A20E5F8B200A86B08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3ED1030C20E5F8B400A86B08 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3ED1030F20E5F8B400A86B08 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -32,9 +33,10 @@
 		3ED1031820E5FB2E00A86B08 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		3ED1031B20E5FBF800A86B08 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		3ED1031D20E606BF00A86B08 /* content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = content.json; sourceTree = "<group>"; };
-		3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListTableViewCell.swift; sourceTree = "<group>"; };
+		3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoListTableViewCell.swift; path = "/Users/dongkun/Programming/Swift/Programming Guide/Design Pattern/MVVM/MVVM/View/PhotoTableViewCell/PhotoListTableViewCell.swift"; sourceTree = "<absolute>"; };
 		3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
 		3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCellViewModel.swift; sourceTree = "<group>"; };
+		3EFA487220E6666A0021EFFF /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 		3F4247298D7F10913D1AA3FA /* Pods-MVVM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MVVM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MVVM/Pods-MVVM.debug.xcconfig"; sourceTree = "<group>"; };
 		7FCD1A9F0C3A60F8E9B0C5B3 /* Pods_MVVM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MVVM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8F8CF19B39A9D994D21E289 /* Pods-MVVM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MVVM.release.xcconfig"; path = "Pods/Target Support Files/Pods-MVVM/Pods-MVVM.release.xcconfig"; sourceTree = "<group>"; };
@@ -52,24 +54,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3EC2A8D220E6284400700BDF /* TableView */ = {
-			isa = PBXGroup;
-			children = (
-				3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */,
-				3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */,
-			);
-			path = TableView;
-			sourceTree = "<group>";
-		};
-		3EC2A8D320E6284E00700BDF /* TableViewCell */ = {
-			isa = PBXGroup;
-			children = (
-				3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */,
-				3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */,
-			);
-			path = TableViewCell;
-			sourceTree = "<group>";
-		};
 		3ED102F920E5F8B200A86B08 = {
 			isa = PBXGroup;
 			children = (
@@ -123,10 +107,37 @@
 		3ED1031F20E609D400A86B08 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3EC2A8D320E6284E00700BDF /* TableViewCell */,
-				3EC2A8D220E6284400700BDF /* TableView */,
+				3EFA487120E6664A0021EFFF /* PhotoDetailView */,
+				3EFA487020E660580021EFFF /* PhotoTableViewCell */,
+				3EFA486F20E65FA40021EFFF /* PhotoListTableView */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		3EFA486F20E65FA40021EFFF /* PhotoListTableView */ = {
+			isa = PBXGroup;
+			children = (
+				3ED1030720E5F8B200A86B08 /* PhotoListViewController.swift */,
+				3ED1032220E60D8600A86B08 /* PhotoListViewModel.swift */,
+			);
+			path = PhotoListTableView;
+			sourceTree = "<group>";
+		};
+		3EFA487020E660580021EFFF /* PhotoTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				3ED1032020E609F300A86B08 /* PhotoListTableViewCell.swift */,
+				3ED1032420E60DD200A86B08 /* PhotoListCellViewModel.swift */,
+			);
+			path = PhotoTableViewCell;
+			sourceTree = "<group>";
+		};
+		3EFA487120E6664A0021EFFF /* PhotoDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				3EFA487220E6666A0021EFFF /* PhotoDetailViewController.swift */,
+			);
+			path = PhotoDetailView;
 			sourceTree = "<group>";
 		};
 		E1BB4E919B349540DB938BCC /* Frameworks */ = {
@@ -265,6 +276,7 @@
 				3ED1032520E60DD200A86B08 /* PhotoListCellViewModel.swift in Sources */,
 				3ED1031C20E5FBF800A86B08 /* APIService.swift in Sources */,
 				3ED1032120E609F300A86B08 /* PhotoListTableViewCell.swift in Sources */,
+				3EFA487320E6666A0021EFFF /* PhotoDetailViewController.swift in Sources */,
 				3ED1030620E5F8B200A86B08 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

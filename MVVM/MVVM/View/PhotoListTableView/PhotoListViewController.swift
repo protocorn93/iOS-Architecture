@@ -19,12 +19,14 @@ class PhotoListViewController: UIViewController {
     lazy var viewModel: PhotoListViewModel = {
         return PhotoListViewModel()
     }()
+    
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initializeTableView()
         initializeViewModel()
     }
+    
     //MARK: Initiate UI Components
     func initializeTableView(){
         title = "Popular"
@@ -68,13 +70,23 @@ class PhotoListViewController: UIViewController {
         
         viewModel.requestFetchData()
     }
+    
     //MARK: Setup Alert
     func showAlert( _ message: String ) {
         let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    //MARK: Segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? PhotoDetailViewController,
+            let photo = viewModel.selectedPhoto {
+            vc.imageUrl = photo.image_url
+        }
+    }
 }
+
 //MARK:- TableViewDelegate & DataSource
 extension PhotoListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,8 +107,13 @@ extension PhotoListViewController: UITableViewDelegate, UITableViewDataSource {
         return 150
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        self.viewModel.userPressed(at: indexPath)
+        if viewModel.isAllowSegue {
+            return indexPath
+        }else{
+            return nil
+        }
     }
 }
 

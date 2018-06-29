@@ -116,16 +116,30 @@
             </objects>
             <point key="canvasLocation" x="1184.8" y="-564.46776611694156"/>
         </scene>
-        <!--View Controller-->
+        <!--Photo Detail View Controller-->
         <scene sceneID="FlP-Q2-nZv">
             <objects>
-                <viewController id="UF2-pO-Q1g" sceneMemberID="viewController">
+                <viewController id="UF2-pO-Q1g" customClass="PhotoDetailViewController" customModule="MVVM" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vdM-FQ-A3C">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ubh-XZ-Q20">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Ubh-XZ-Q20" firstAttribute="top" secondItem="GWq-yo-EEI" secondAttribute="top" id="5Bt-wb-s3f"/>
+                            <constraint firstItem="GWq-yo-EEI" firstAttribute="bottom" secondItem="Ubh-XZ-Q20" secondAttribute="bottom" id="7qp-x8-8Ya"/>
+                            <constraint firstItem="Ubh-XZ-Q20" firstAttribute="leading" secondItem="GWq-yo-EEI" secondAttribute="leading" id="C6W-yE-ooT"/>
+                            <constraint firstItem="GWq-yo-EEI" firstAttribute="trailing" secondItem="Ubh-XZ-Q20" secondAttribute="trailing" id="oHw-O6-isd"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="GWq-yo-EEI"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="Ubh-XZ-Q20" id="8BN-6s-Gp8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d9L-jR-xZp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
