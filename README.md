@@ -301,7 +301,289 @@ MVP와 마찬가지로 `UIView`와 `UIViewController`를 View로 묶어 분류�
 1. Write controller logics such as pagination, error handling, etc.
 2. Write presentational logic, provide interfaces to the View.
 
+그럼 이제 이를 구현한 코드로 살펴보도록 하겠습니다. 코드로 바로 MVVM 아키텍쳐를 구현해보는 것이 아닌 MVC 아키텍쳐로 만들어진 프로젝트를 MVVM으로 고쳐가며 하나하나 살펴보도록 하겠습니다. 만들어 볼 예제는 기본적인 테이블 뷰와 그 셀의 세그로 연결되는 뷰 컨트롤러로 넘어가는 정도의 간단한 수준입니다. 
 
+> 앱의 완성된 결과를 [링크](https://media.giphy.com/media/l4EoWSOY1kxeSHVvi/giphy.gif)를 통해 먼저 확인해주세요.
+
+**MVC version**
+
+먼저 MVC 아키텍쳐로 구현한 몇몇 코드들을 살펴보도록 하겠습니다. 이 코드들은 상당히 낯에 익을 것이라고 예상됩니다! (저도 그랬거든요!)
+
+예제에서 Model을 담당하는 `Photo` 구조체입니다.
+
+```swift
+struct Photo {
+    let id: Int
+    let name: String
+    let description: String?
+    let created_at: Date
+    let image_url: String
+    let for_sale: Bool
+    let camera: String?
+}
+```
+
+Model을 채워줄 데이터는 예제 내의 `APIService`를 사용하여 받아와 테이블 뷰에 뿌려주게 됩니다. 그 코드는 아래와 같습니다. 패치의 행위가 완료되면 테이블 뷰를 `reloadData()` 해줌으로써 셀을 데이터에 맞추어 갱신해주는 작업입니다.
+
+```swift
+self?.activityIndicator.startAnimating()
+self.tableView.alpha = 0.0
+apiService.fetchPopularPhoto { [weak self] (success, photos, error) in  DispatchQueue.main.async {
+    self?.photos = photos
+    self?.activityIndicator.stopAnimating()
+    self?.tableView.alpha = 1.0
+    self?.tableView.reloadData()
+  }
+}
+```
+
+ 그리고 `UITableViewDataSource` 프로토콜 메소드 역시 다음과 같은 모습일 것입니다.
+
+```swift
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // ....................
+    let photo = self.photos[indexPath.row]
+    //Wrap the date
+    let dateFormateer = DateFormatter()
+    dateFormateer.dateFormat = "yyyy-MM-dd"
+    cell.dateLabel.text = dateFormateer.string(from: photo.created_at)
+    //.....................
+}
+  
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.photos.count
+}
+```
+
+위의 메소드는 뷰 컨트롤러에서 정의해주었고 화면에 뿌려주고 이를 가공하는 작업까지 모두 뷰 컨트롤러에서 진행되고 있는걸 확인하실 수 있습니다.
+
+마지막으로 다음은 `UITableViewDelegate` 프로토콜 메소드를 구현한 것입니다.
+
+```swift
+func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    let photo = self.photos[indexPath.row]
+    if photo.for_sale { // If item is for sale 
+        self.selectedIndexPath = indexPath
+        return indexPath
+    }else { // If item is not for sale 
+        let alert = UIAlertController(title: "Not for sale", message: "This item is not for sale", preferredStyle: .alert)
+        alert.addAction( UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        return nil
+    }
+}
+```
+
+셀을 선택한 사용자의 액션을 받고 선택한 셀에 따라 `alert`를 띄어줄지 뷰 컨트롤러로 넘어갈 것인지를 결정하고 실행하는 역할까지 뷰 컨트롤러의 하나의 메소드안에서 진행되고 있습니다.
+
+이 문서를 위에서부터 읽어오셨다면 무언가 너무 강하게 연결되어 있다는 것을 느끼실 수 있습니다. 위의 코드들을 간략하게 소개하는 부분에서 언급한 것들뿐만 아니라 뷰 컨트롤러는 `APIService`에 대해 의존성 문제를 갖고 있습니다.
+
+이렇게 많은 것들이 뷰 컨트롤러 내에서 강하게 연결되어 있고 의존성이 존재한다면 테스트 코드를 작성하기가 매우 까다로워질 것이고 원하는 테스팅 성능을 뽑아낼 수 없을 것입니다. 그럼 이제 이들을 분리하여 보다 테스팅에 용이할 수 있는 MVVM 아키텍쳐로 수정해보도록 하겠습니다.
+
+**MVVM version**
+
+위의 문제점들을 해결하기 위해서는 가장 먼저 뷰 컨트롤러의 부담을 줄여주어야 합니다. 이를 위해 먼저 예제에서 필요한 UI 요소들을 살펴보고 그들을 비즈니스 로직과 레이아웃 로직을 분리해보도록 하겠습니다.
+
+이 예제에서는 다음과 같이 세 가지의 UI 요소가 사용됩니다.
+
+1. activityIndicator (Loading / Finish)
+2. tableView (Show / Hide)
+3. cells (title, description. created date)
+
+이들을 View와 ViewModel로 나눈 것을 추상화한다면 다음과 같은 다이어그램으로 표현될 수 있을 것입니다.
+
+<img src="https://cdn-images-1.medium.com/max/1600/1*ktmfaTJajU0NYrCBq8iqnA.png">
+
+각각의 UI 요소는 ViewModel의 프로퍼티에 일대일 대응합니다. 그럼 이런 바인딩을 구현하려면 어떻게 해야 할까요? 스위프트에서는 이러한 작업을 다음의 방법들로 구현할 수 있습니다.
+
+1. KVO (Key-Value Observing) 패턴
+2. RxSwift나 ReactiveCocoa같은 FRP(Functional Reactive Programming) 라이브러를 활용.
+3. Delegation
+4. Property Observer
+
+저는 참고하고 있는 블로그의 글을 따라 Property Observer와 Closure를 사용하여 구현해보았습니다. 모양새와 사용 용도만을 코드로 간단히 살펴보자면 다음과 같습니다.
+
+***ViewModel***
+
+```swift
+var prop: T {
+    didSet{ // Property Observer
+        self.propChanged?()
+    }
+}
+```
+
+***View***
+
+```swift
+viewModel.propChanged = { [weak self] in
+  DispatchQueue.main.async {
+      // View의 업데이트 작업.
+  }
+}
+```
+
+View에서 ViewModel의 바인딩 Closure들을 구현해줌으로써 View의 갱신에 대한 코드를 정의해주고 값의 변화에 따른 뷰 갱신을 호출하는 행위는 ViewModel에 위치하게 됩니다. 즉 데이터에 따라 뷰의 갱신을 명령하는 행위는 ViewModel에서 이루어지게 됩니다. 
+
+이렇게 바인딩 과정을 통하면 ViewModel은 MVP의 Presenter에서 프로토콜의 형태로라도 View의 존재를 알던 것과는 다르게 전혀 View에 대한 어떠한 참조도 존재하지 않게 됩니다.
+
+예제의 전체 코드는 현재 문서와 동일한 레포지터리에 있으므로 해당 폴더를 확인해주시기 바랍니다. 여기선 위와 같은 방식의 코드가 실제 어떻게 구현되었는지를 간단하게 살펴보도록 하겠습니다. 테이블 뷰에 데이터를 뿌려주기 위한 바인딩 Closure와 호출을 살펴보도록 하겠습니다.
+
+***ViewModel***
+
+```swift
+let apiService: APIServiceProtocol
+
+//MARK: Initializer
+init( apiService: APIServiceProtocol = APIService()) {
+    self.apiService = apiService
+}
+
+...
+// Activity Indicator
+var isLoading: Bool = false {
+    didSet{
+        // notify
+        self.updateLoadingStatus?()
+    }
+}
+// Table View
+private var cellViewModels:[PhotoListCellViewModel] = [PhotoListCellViewModel]() {
+    didSet{
+        // notify
+        self.reloadTableViewClosure?()
+    }
+}
+// Number of cells
+var numberOfCells: Int {
+    return cellViewModels.count
+}
+
+//MARK: Binding Closures
+var reloadTableViewClosure: (()->())?
+var updateLoadingStatus: (()->())?
+...
+
+// Request Data
+func requestFetchData(){
+    self.isLoading = true // trigger activity indicator startAnimating
+    apiService.fetchPopularPhoto { [weak self] (success, photos, error) in
+        // Compelete Fetching Data
+        self?.isLoading = false // trigger activity indicator stopAnimating
+        if let error = error {
+            self?.alertMessage = error.rawValue
+        }else {
+            self?.processFetchedPhoto(photos: photos)
+        }
+    }
+}
+// Generate cell's ViewModel
+private func processFetchedPhoto( photos: [Photo] ) {
+    self.photos = photos // Cache
+    var viewModels = [PhotoListCellViewModel]() // TableViewCellViewModel
+    photos.forEach({viewModels.append(createCellViewModel(photo: $0))})
+    self.cellViewModels = viewModels // trigger photoListTableView reloadData
+}
+
+// Get Cell
+func getCellViewModel( at indexPath: IndexPath ) -> PhotoListCellViewModel {
+    return cellViewModels[indexPath.row]
+}
+```
+
+가장 먼저 `APIService`는 더 이상 View(ViewController)에 위치하지 않습니다. 그다음 코드의 전체적인 흐름을 살펴보자면 `requestFetchData` 메소드가 호출되면 데이터를 받아오는 중과 끝난 상황에서 `isLoading`에 적절한 값을 할당해주어 `didSet`을 통한 View의 `activityIndicator` 행위를 조작해줄 수 있습니다. 
+
+그리고 데이터를 받아오는 행위가 정상적으로 완료되었다면 Cell의 ViewModel을 만드는 과정을 거쳐 `cellViewModels`에 테이블 뷰 위에 뿌려줄 데이터가 할당됩니다. 이렇게 값이 할당되면 역시 `didSet`을 통해 `tableView`의 `reloadData` 작업이 진행되는 것입니다. 그럼 이에 대한 View의 코드를 살펴보도록 하겠습니다.
+
+***View***
+
+```swift
+//MARK: Outlets
+@IBOutlet weak var tableView: UITableView!
+@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+
+//MARK: ViewModel For TableView
+lazy var viewModel: PhotoListViewModel = {
+    return PhotoListViewModel()
+}()
+
+//MARK: Life cycle
+override func viewDidLoad() {
+    super.viewDidLoad()
+    ...
+    initializeViewModel()
+}
+
+//MARK: Setup ViewModel
+func initializeViewModel(){
+    ...
+    
+    viewModel.updateLoadingStatus = { [weak self] in
+        DispatchQueue.main.async {
+            let isLoading = self?.viewModel.isLoading ?? false             
+            if isLoading {
+                self?.activityIndicator.startAnimating()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self?.tableView.alpha = 0
+                })
+            }else{
+                self?.activityIndicator.stopAnimating()
+                UIView.animate(withDuration: 0.2, animations: {
+                    self?.tableView.alpha = 1
+                })
+            }
+        }
+    }
+        
+    viewModel.reloadTableViewClosure = { [weak self] in
+        DispatchQueue.main.async {
+            self?.tableView.reloadData()
+        }
+    }
+        
+    viewModel.requestFetchData()
+}
+
+//MARK: TableView DataSource
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "photoCellIdentifier", for: indexPath) as? PhotoListTableViewCell else {
+        fatalError("Cell not exists in storyboard")
+    }
+    // get data from cellViewModel
+    let cellVieWModel = viewModel.getCellViewModel(at: indexPath)
+    cell.setupViews(viewModel: cellVieWModel)
+    return cell
+}
+
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return viewModel.numberOfCells
+}
+```
+
+ `initializeViewModel` 메소드를 통해 ViewModel의 바인딩 Closure들을 정의해주고 마지막에 `requestFetchData` 메소드를 호출함으로써 데이터를 받아오는 작업을 시작합니다.
+
+`UITableViewDataSource` 프로토콜 메소드도 역시 ViewModel로부터 값을 받아와 사용하는 것을 확인할 수 있습니다.
+
+> User Interaction은 전체 코드에서 확인하실 수 있습니다.
+
+그리하여 전체적인 그림은 다음과 같을 것입니다.
+
+<img src="https://cdn-images-1.medium.com/max/1600/1*w4bDvU7IlxOpQZNw49fmyQ.png">
+
+**MVP와의 차이점**
+
+제가 느끼기에 가장 큰 차이점은 Presenter는 View와 연결성이 약하지만 프로토콜로써 간접적으로 이를 참조하고 있고 ViewModel은 바인딩 작업을 통해 ViewModel에서 View에 관한 어떠한 의존성이나 연결성도 존재하지 않는다는 것입니다. 
+
+MVVM이 물론 완벽하다고 할 순 없습니다. 다음은 MVVM의 단점을 소개하고 있는 글들입니다.
+
+- [MVVM is Not Very Good - Soroush Khanlou](http://khanlou.com/2015/12/mvvm-is-not-very-good/)
+- [The Problems with MVVM on iOS - Daniel Hall](http://www.danielhall.io/the-problems-with-mvvm-on-ios)
+
+단점 중 하나가 바로 위에서 코드를 잠깐 살펴보았던 것과 마찬가지로 ViewModel에서 너무 많은 일들을 한다는 것도 하나의 문제점으로 지적되곤 합니다. 이를 해결하기 위해 실제로 Builder나 Router의 개념이 도입되었습니다. 역시 다음의 글들을 참고해주시기 바랍니다.
+
+- [Improve your iOS Architecture with FlowControllers](http://merowing.info/2016/01/improve-your-ios-architecture-with-flowcontrollers/)
+- [VIPER](https://www.objc.io/issues/13-architecture/viper/)
+- [Clean by Uncle Bob](https://hackernoon.com/introducing-clean-swift-architecture-vip-770a639ad7bf)
 
 ---
 
